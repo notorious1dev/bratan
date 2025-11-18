@@ -1,2 +1,2 @@
-# bratan
-Header-Only Utility Libraries in C
+# Bratan
+A collection of convenient header-only libraries for common tasks.
