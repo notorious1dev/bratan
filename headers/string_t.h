@@ -16,16 +16,14 @@ void string_free(string_t * str);
 #ifndef STRING_T_IMPLEMENTATION_H
 #define STRING_T_IMPLEMENTATION_H
 
-#if defined(__unix__) || defined(__APPLE__)
+//#if defined(__unix__) || defined(__APPLE__)
 
 #include <assert.h>
 #include <stdlib.h>
 
-#else
-
-#error "Only unix-like systems"
-
-#endif
+//#else
+//#error "Only unix-like systems"
+//#endif
 
 string_t * string_constructor(const char * input) {
     assert(input != NULL);
@@ -52,8 +50,9 @@ string_t * string_constructor(const char * input) {
 void string_free(string_t * str) {
     assert(str != NULL);
 
-    if(str->data != NULL) {
-            free(str->data);
+    if(str->data != NULL) 
+    {
+        free(str->data);
     }
 
     free(str);
