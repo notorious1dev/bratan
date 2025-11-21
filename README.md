@@ -4,6 +4,9 @@ A collection of **header-only C utility libraries** designed to streamline commo
 
 ## Content
 
-* `./headers/data_structures/linkedlist_t` – this is a generic **singly linked list implementation**.
-* `./headers/data_structures/queue_t` – This is a generic, **singly linked list-based queue implementation**.
-* `./headers/string_t` – same but with strings.
+* `./headers/data_structures/linkedlist_t.h` – this is a generic singly linked list implementation.
+* `./headers/data_structures/queue_t.h` – This is a generic, singly linked list-based queue implementation.
+* `./headers/threadpool_t.h` – implementation of a threadpool. **Requires a `queue_t.h`**
+
+# To Do
+- [ ] Add proper shutdown logic for ``threadpool_t.h`` inside ``_threadroutine``.
