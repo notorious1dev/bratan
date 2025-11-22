@@ -11,7 +11,7 @@
 
 typedef struct threadpool_t {
     int threads_amount;
-    int isActive;
+    int is_active;
     pthread_t *threads;
     queue_t queue;
     pthread_mutex_t lock;
@@ -24,9 +24,7 @@ typedef struct threadjob_t {
     void * (*fptr)(void*);
 } threadjob_t;
 
-threadpool_t* threadpool_init(int); 
-void threadpool_create_work(threadpool_t*, void*, void*(*fptr)(void*));
-void* _threadroutine(void*);
+
 
 #ifndef THREADPOOL_T_IMPLEMENTATION_H
 #define THREADPOOL_T_IMPLEMENTATION_H
@@ -40,6 +38,10 @@ void* _threadroutine(void*);
 #error "System is not posix compatible"
 #endif
 
+threadpool_t* threadpool_init(int); 
+void threadpool_create_work(threadpool_t*, void*, void*(*fptr)(void*));
+void* _threadroutine(void*);
+
 threadpool_t* threadpool_init(int _thread_amount) 
 {
     assert(_thread_amount > 0);
@@ -51,7 +53,7 @@ threadpool_t* threadpool_init(int _thread_amount)
     }
 
     threadpool->threads_amount = _thread_amount;
-    threadpool->isActive = 1; 
+    threadpool->is_active = 1; 
 
     pthread_mutex_init(&threadpool->lock, NULL);
     pthread_cond_init(&threadpool->signal, NULL);

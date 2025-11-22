@@ -14,31 +14,27 @@ typedef struct queue_t
     size_t length;
 } queue_t;
 
-queue_t queue_init();
-node_t * create_node(void *input_data);
-void queue_enqueue(queue_t *queue, node_t *node);
-node_t * queue_dequeue(queue_t *queue);
-node_t * queue_peek(queue_t *queue);
-void queue_clear(queue_t *queue);
-void queue_free(queue_t *queue);
-
 #ifndef QUEUE_T_IMPLEMENTATION_H
 #define QUEUE_T_IMPLEMENTATION_H 
 #include <stdlib.h>
 #include <assert.h>
 
-queue_t queue_init() {
-    queue_t queue = {0};
-    queue.length = 0;
-    queue.head = NULL;
-    queue.tail = NULL;
+queue_t queue_init(queue_t*);
+node_t * create_node(void*);
+void queue_enqueue(queue_t*, node_t *);
+node_t * queue_dequeue(queue_t*);
+node_t * queue_peek(queue_t*);
+void queue_clear(queue_t*);
+void queue_free(queue_t*);
 
-    return queue;
+queue_t queue_init(queue_t * queue) {
+    assert(queue != NULL);
+    queue->length = 0;
+    queue->head = NULL;
+    queue->tail = NULL;
 }
 
 node_t * create_node(void *input_data) {
-    assert(input_data != NULL);
-    
     node_t *node = (node_t*)malloc(sizeof(node_t));
     assert(node != NULL);
 
@@ -49,7 +45,7 @@ node_t * create_node(void *input_data) {
 }
 
 void queue_enqueue(queue_t *queue, node_t * node) {
-    assert(queue != NULL && node != NULL);
+    assert(queue != NULL);
 
     if (queue->head == NULL) {
         queue->head = node;
