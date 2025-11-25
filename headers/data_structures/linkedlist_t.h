@@ -18,18 +18,20 @@ typedef struct linkedlist_t
 #include <stdlib.h>
 #include <assert.h>
 
-linkedlist_t create_linkedlist(linkedlist_t*);
-void reset_linkedlist(linkedlist_t*);
-void free_linkedlist(linkedlist_t*);
-node_t * create_node(void*);
-void add_node(linkedlist_t*, node_t*);
-void append_node(linkedlist_t*, node_t*);
-void delete_node(linkedlist_t*, node_t*);
+linkedlist_t create_linkedlist();
+void reset_linkedlist(linkedlist_t *ll);
+void free_linkedlist(linkedlist_t *ll);
+node_t * create_node(void *input_data);
+void add_node(linkedlist_t * ll, node_t * node);
+void append_node(linkedlist_t *ll, node_t *node);
+void delete_node(linkedlist_t *ll, node_t *node);
 
-linkedlist_t create_linkedlist(linkedlist_t *list) {
-    assert(list != NULL);
-    list->length = 0;
-    list->head = NULL;
+linkedlist_t create_linkedlist() {
+    linkedlist_t list = {0};
+    list.length = 0;
+    list.head = NULL;
+
+    return list;
 }
 
 void reset_linkedlist(linkedlist_t *ll)
@@ -64,6 +66,8 @@ void free_linkedlist(linkedlist_t *ll)
 }
 
 node_t * create_node(void *input_data) {
+    assert(input_data != NULL);
+    
     node_t *node = (node_t*)malloc(sizeof(node_t));
     assert(node != NULL);
 
@@ -74,7 +78,7 @@ node_t * create_node(void *input_data) {
 }
 
 void append_node(linkedlist_t *ll, node_t *node) {
-    assert(ll != NULL && node != NULL);
+    assert(ll != NULL && node);
     assert(node->next == NULL);
 
     if (ll->head == NULL) 
@@ -92,7 +96,7 @@ void append_node(linkedlist_t *ll, node_t *node) {
     ll->length += 1;
 }
 
-void add_node(linkedlist_t *ll, node_t * node) {
+void add_node(linkedlist_t * ll, node_t * node) {
     assert(ll != NULL && node != NULL);
 
     node_t *temp = ll->head;

@@ -24,8 +24,6 @@ typedef struct threadjob_t {
     void * (*fptr)(void*);
 } threadjob_t;
 
-
-
 #ifndef THREADPOOL_T_IMPLEMENTATION_H
 #define THREADPOOL_T_IMPLEMENTATION_H
 
@@ -38,9 +36,9 @@ typedef struct threadjob_t {
 #error "System is not posix compatible"
 #endif
 
-threadpool_t* threadpool_init(int); 
+threadpool_t *threadpool_init(int); 
 void threadpool_create_work(threadpool_t*, void*, void*(*fptr)(void*));
-void* _threadroutine(void*);
+static void *_threadroutine(void*);
 
 threadpool_t* threadpool_init(int _thread_amount) 
 {

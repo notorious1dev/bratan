@@ -10,14 +10,14 @@ typedef struct string_t
     size_t length;
 } string_t;
 
-
-
 #ifndef STRING_T_IMPLEMENTATION_H
 #define STRING_T_IMPLEMENTATION_H
 
 //#if defined(__unix__) || defined(__APPLE__)
+
 #include <assert.h>
 #include <stdlib.h>
+
 //#else
 //#error "Only unix-like systems"
 //#endif
