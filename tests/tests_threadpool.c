@@ -113,6 +113,21 @@ void When_ThreadpoolJobsAddedDynamically_Then_AllExecuted(void) {
     TEST_ASSERT_EQUAL(6, counter);
 }
 
+void When_ThreadpoolShutdown_Then_ThreadsExitCleanly(void) {
+    threadpool_t *tp = threadpool_init(4);
+    TEST_ASSERT_NOT_NULL(tp);
+
+    for (int i = 0; i < 8; i++) {
+        int *v = malloc(sizeof(int));
+        *v = 1;
+        threadpool_create_work(tp, v, increment_counter);
+    }
+    usleep(500 * 1000);
+    threadpool_free(tp);
+    TEST_ASSERT_EQUAL(8, counter);
+
+}
+
 int main(void) {
     UNITY_BEGIN();
     RUN_TEST(When_ThreadpoolInit_Then_NotNull);
@@ -128,5 +143,6 @@ int main(void) {
     RUN_TEST(When_ThreadpoolJobWithNegativeValue_Then_CounterDecremented);
     RUN_TEST(When_ThreadpoolMultipleJobsMixedValues_Then_CounterCorrect);
     RUN_TEST(When_ThreadpoolJobsAddedDynamically_Then_AllExecuted);
+    RUN_TEST(When_ThreadpoolShutdown_Then_ThreadsExitCleanly);
     UNITY_END();
 }

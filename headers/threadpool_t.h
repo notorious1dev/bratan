@@ -38,6 +38,7 @@ typedef struct threadjob_t {
 
 threadpool_t *threadpool_init(int); 
 void threadpool_create_work(threadpool_t*, void*, void*(*fptr)(void*));
+void threadpool_free(threadpool_t*);
 static void *_threadroutine(void*);
 
 threadpool_t* threadpool_init(int _thread_amount) 
@@ -74,6 +75,34 @@ threadpool_t* threadpool_init(int _thread_amount)
     return threadpool; 
 }
 
+void threadpool_free(threadpool_t *threadpool)
+{
+    assert(threadpool != NULL);
+    
+    pthread_mutex_lock(&threadpool->lock);
+    threadpool->is_active = 0;
+    pthread_cond_broadcast(&threadpool->signal);
+    pthread_mutex_unlock(&threadpool->lock);
+
+    for (int i = 0; i < threadpool->threads_amount; i++) {
+        pthread_join(threadpool->threads[i], NULL);
+    }
+
+    node_t *current = threadpool->queue.head;
+    while(current != NULL)
+    {
+        free(current->data);
+        node_t * tmp = current;
+        current = current->next;
+        free(tmp);
+    }
+
+    pthread_mutex_destroy(&threadpool->lock);
+    pthread_cond_destroy(&threadpool->signal);
+    free(threadpool->threads);
+    free(threadpool);
+}
+
 void threadpool_create_work(threadpool_t * threadpool, void * arg, void*(*_fptr)(void*))
 {
     pthread_mutex_lock(&threadpool->lock);
@@ -103,7 +132,13 @@ void* _threadroutine (void * arg)
         pthread_mutex_lock(&threadpool->lock);
 
         while(threadpool->queue.length <= 0) 
-        {
+        {   
+            if (!threadpool->is_active)
+            {
+                pthread_mutex_unlock(&threadpool->lock);
+                return NULL;
+            }
+
             pthread_cond_wait(&threadpool->signal, &threadpool->lock);
         }
 

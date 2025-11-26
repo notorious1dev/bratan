@@ -16,4 +16,4 @@ A curated collection of **header-only C utility libraries** designed to simplify
 
 ## To Do
 
-* [ ] Implement proper shutdown logic for `threadpool_t.h` inside `_threadroutine`.
+* [x] Implement proper shutdown logic for `threadpool_t.h` inside `_threadroutine`.
